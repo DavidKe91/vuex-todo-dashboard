@@ -1,23 +1,24 @@
 const state = {
-  todos: [
-    {
-      id: 1,
-      title: "Todo One",
-    },
-    {
-      id: 2,
-      title: "Todo Two",
-    },
-  ],
+  todos: [],
 };
 
 const getters = {
   allTodos: (state) => state.todos,
 };
 
-const actions = {};
+const actions = {
+  async fetchTodos({ commit }) {
+    const response = await fetch(
+      "https://jsonplaceholder.typicode.com/todos"
+    ).then((response) => response.json());
 
-const mutations = {};
+    commit("setTodos", response);
+  },
+};
+
+const mutations = {
+  setTodos: (state, todos) => (state.todos = todos),
+};
 
 export default {
   state,
