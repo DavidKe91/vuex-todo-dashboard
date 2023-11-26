@@ -51,6 +51,20 @@ const actions = {
 
     commit("setTodos", response);
   },
+
+  async updateTodo({ commit }, updatedTodo) {
+    const response = await fetch(
+      `https://jsonplaceholder.typicode.com/todos/${updatedTodo.id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(updatedTodo),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    ).then((response) => response.json());
+    commit("updateTodo", response);
+  },
 };
 
 const mutations = {
@@ -58,6 +72,12 @@ const mutations = {
   newTodo: (state, todo) => state.todos.unshift(todo),
   removeTodo: (state, id) =>
     (state.todos = state.todos.filter((todo) => todo.id !== id)),
+  updateTodo: (state, updatedTodo) => {
+    const index = state.todos.findIndex((todo) => todo.id === updatedTodo.id);
+    if (index !== -1) {
+      state.todos.splice(index, 1, updatedTodo);
+    }
+  },
 };
 
 export default {
